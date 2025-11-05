@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Morrowland Big 5 Archetype Test</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffb6c1, #a4ffb0, #c4a1ff);
+      background-size: 600% 600%;
+      animation: softFlow 20s ease infinite;
+      color: #222;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    @keyframes softFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 3em auto;
+      background: white;
+      padding: 2.5em;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 1.3em;
+      margin-bottom: 1.5em;
+    }
+    .btn {
+      background: #b6ff8c;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1em;
+    }
+    .btn:hover {
+      background: #a0ffc9;
+      transform: scale(1.05);
+    }
+    .scale label {
+      margin: 0 10px;
+      cursor: pointer;
+    }
+    #result {
+      display: none;
+      font-size: 1.3em;
+      margin-top: 2em;
+    }
+    #unlockBlock {
+      display: none;
+      margin-top: 2em;
+    }
+    input[type="text"] {
+      padding: 8px;
+      font-size: 1em;
+      width: 200px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .trait-order {
+      font-size: 0.9rem;
+      color: #555;
+      letter-spacing: 0.5px;
+      margin-top: -0.3rem;
+      font-style: italic;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Morrowland Big 5 Archetype Test</h1>
+    <p>Rate each statement 1–5. Be honest — this test builds your scientific archetype pattern.</p>
+
+    <div id="questionBox"></div>
+    <button class="btn" id="nextBtn">Next</button>
+
+    <div id="result"></div>
+
+    <div id="unlockBlock">
+      <h3>Unlock Your Full Report</h3>
+      <p>Enter your one-time free code or purchase for <strong>$0.99</strong>.</p>
+      <input id="freeCodeInput" type="text" placeholder="Enter free code" />
+      <button class="btn" id="freeCodeBtn">Unlock Report</button>
+      <p style="margin: 10px;">— or —</p>
+      <button class="btn" id="buyReportBtn">$0.99 – Get Full Report</button>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      // Openness (10)
+      {t:"openness", q:"I enjoy exploring unfamiliar ideas.", reverse:false},
+      {t:"openness", q:"I actively seek new experiences.", reverse:false},
+      {t:"openness", q:"I dislike trying new things.", reverse:true},
+      {t:"openness", q:"Abstract thinking appeals to me.", reverse:false},
+      {t:"openness", q:"I avoid unconventional viewpoints.", reverse:true},
+      {t:"openness", q:"I like creative problem solving.", reverse:false},
+      {t:"openness", q:"I prefer routine over novelty.", reverse:true},
+      {t:"openness", q:"Art, music or literature interest me.", reverse:false},
+      {t:"openness", q:"I question traditions and norms.", reverse:false},
+      {t:"openness", q:"I’m uncomfortable with ambiguity.", reverse:true},
+
+      // Conscientiousness (10)
+      {t:"conscientiousness", q:"I plan tasks before starting.", reverse:false},
+      {t:"conscientiousness", q:"I leave things to the last minute.", reverse:true},
+      {t:"conscientiousness", q:"I keep things organized.", reverse:false},
+      {t:"conscientiousness", q:"I stick to schedules I set.", reverse:false},
+      {t:"conscientiousness", q:"I’m careless with details.", reverse:true},
+      {t:"conscientiousness", q:"I finish what I start.", reverse:false},
+      {t:"conscientiousness", q:"I struggle to follow through.", reverse:true},
+      {t:"conscientiousness", q:"I prepare carefully.", reverse:false},
+      {t:"conscientiousness", q:"I often misplace things.", reverse:true},
+      {t:"conscientiousness", q:"I like having clear structure.", reverse:false},
+
+      // Extraversion (10)
+      {t:"extraversion", q:"I feel energized by social events.", reverse:false},
+      {t:"extraversion", q:"I prefer being alone most of the time.", reverse:true},
+      {t:"extraversion", q:"I’m talkative around new people.", reverse:false},
+      {t:"extraversion", q:"I avoid the spotlight.", reverse:true},
+      {t:"extraversion", q:"I seek excitement and activity.", reverse:false},
+      {t:"extraversion", q:"I feel drained by group conversations.", reverse:true},
+      {t:"extraversion", q:"I easily start conversations.", reverse:false},
+      {t:"extraversion", q:"I keep to myself in groups.", reverse:true},
+      {t:"extraversion", q:"I like being the center of attention.", reverse:false},
+      {t:"extraversion", q:"I find it hard to express myself verbally.", reverse:true},
+
+      // Agreeableness (10)
+      {t:"agreeableness", q:"I try to see things from others’ perspectives.", reverse:false},
+      {t:"agreeableness", q:"I enjoy competition more than cooperation.", reverse:true},
+      {t:"agreeableness", q:"I am considerate and kind to most people.", reverse:false},
+      {t:"agreeableness", q:"I am skeptical of people’s motives.", reverse:true},
+      {t:"agreeableness", q:"I forgive people who have wronged me.", reverse:false},
+      {t:"agreeableness", q:"I prioritize my needs over others’ feelings.", reverse:true},
+      {t:"agreeableness", q:"I avoid hurting others’ feelings.", reverse:false},
+      {t:"agreeableness", q:"I’m blunt even if it upsets people.", reverse:true},
+      {t:"agreeableness", q:"I value harmony in groups.", reverse:false},
+      {t:"agreeableness", q:"I hold grudges.", reverse:true},
+
+      // Neuroticism (10)
+      {t:"neuroticism", q:"I often feel anxious or tense.", reverse:false},
+      {t:"neuroticism", q:"I stay calm in stressful situations.", reverse:true},
+      {t:"neuroticism", q:"My mood changes frequently.", reverse:false},
+      {t:"neuroticism", q:"I rarely worry about things.", reverse:true},
+      {t:"neuroticism", q:"I’m easily irritated.", reverse:false},
+      {t:"neuroticism", q:"I bounce back quickly after setbacks.", reverse:true},
+      {t:"neuroticism", q:"I often feel overwhelmed.", reverse:false},
+      {t:"neuroticism", q:"I keep emotions steady most days.", reverse:true},
+      {t:"neuroticism", q:"I’m sensitive to stress.", reverse:false},
+      {t:"neuroticism", q:"I rarely feel nervous.", reverse:true}
+    ];
+
+    let current = 0;
+    const answers = [];
+    const questionBox = document.getElementById("questionBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultBox = document.getElementById("result");
+
+    function renderQuestion() {
+      const q = QUESTIONS[current];
+      questionBox.innerHTML = `
+        <h3>Question ${current + 1} of ${QUESTIONS.length}</h3>
+        <div class="question">${q.q}</div>
+        <div class="scale">
+          ${[1,2,3,4,5].map(v=>`
+            <label><input type="radio" name="answer" value="${v}"> ${v}</label>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    nextBtn.onclick = () => {
+      const choice = document.querySelector('input[name="answer"]:checked');
+      if (!choice) {
+        alert("Please select a rating before continuing.");
+        return;
+      }
+      answers.push(Number(choice.value));
+      current++;
+      if (current < QUESTIONS.length) {
+        renderQuestion();
+      } else {
+        calculateResults();
+      }
+    };
+
+    function calculateResults() {
+      let traits = { openness: [], conscientiousness: [], extraversion: [], agreeableness: [], neuroticism: [] };
+      QUESTIONS.forEach((q, i) => {
+        let val = answers[i];
+        if (q.reverse) val = 6 - val;
+        traits[q.t].push(val);
+      });
+
+      function avg(a){return a.reduce((x,y)=>x+y,0)/a.length;}
+      function bucket(v){if(v<=2.5)return"Low";if(v<=3.8)return"Medium";return"High";}
+      const code = [bucket(avg(traits.openness)),bucket(avg(traits.conscientiousness)),bucket(avg(traits.extraversion)),bucket(avg(traits.agreeableness)),bucket(avg(traits.neuroticism))].join("-");
+
+      questionBox.style.display="none";
+      nextBtn.style.display="none";
+      resultBox.style.display="block";
+      resultBox.innerHTML=`
+        <h2>Your Big Five Pattern</h2>
+        <p><strong>${code}</strong></p>
+        <p class="trait-order">Openness — Conscientiousness — Extraversion — Agreeableness — Neuroticism</p>
+      `;
+      document.getElementById("unlockBlock").style.display="block";
+      resultBox.dataset.code = code;
+    }
+
+    document.getElementById("freeCodeBtn").addEventListener("click", async () => {
+      const code = document.getElementById("result").dataset.code;
+      const freeCode = document.getElementById("freeCodeInput").value.trim();
+      if (!freeCode) return alert("Please enter a code.");
+      const resp = await fetch("/verify-free-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: freeCode })
+      });
+      const data = await resp.json();
+      if (data.valid) {
+        window.location = `/api/render-report?code=${encodeURIComponent(code)}&paid=true`;
+      } else {
+        alert(data.error || "Invalid or expired code.");
+      }
+    });
+
+    document.getElementById("buyReportBtn").addEventListener("click", () => {
+      const code = document.getElementById("result").dataset.code;
+      window.location = `/create-checkout-session?code=${encodeURIComponent(code)}`;
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>

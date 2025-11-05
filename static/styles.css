@@ -1,0 +1,202 @@
+/* 🌈✨ Animated Pastel Rainbow Background — More Colorful + Kawaii Vibe */
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+
+  /* brighter candy hues */
+  background: linear-gradient(
+    120deg,
+    #ff8fa3, #ffc85c, #faff75, #8dfba8, #70d6ff, #b28dff, #ff9cee, #ff8fa3
+  );
+  background-size: 600% 600%;
+  animation: rainbowFlow 15s ease infinite;
+}
+
+@keyframes rainbowFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 🌸 Header */
+.soft-header {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #333;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.soft-header h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(90deg, #ff5f6d, #ffd166, #06d6a0, #118ab2, #9b5de5, #ff70a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: headerRainbow 7s linear infinite;
+}
+
+@keyframes headerRainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.soft-header p {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+/* 📦 Main Blocks */
+.block {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 25px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: 4px dashed rgba(255, 170, 200, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.block:hover {
+  transform: scale(1.01);
+}
+
+.block h2 {
+  text-align: center;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.block p {
+  line-height: 1.7;
+  color: #444;
+  font-size: 1.05rem;
+}
+
+/* 🌈 Trait Grid — Kawaii Kidcore Cubes */
+.trait-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  justify-items: center;
+}
+
+.trait-card {
+  position: relative;
+  border-radius: 25px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  background: white;
+  border: 5px solid #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+/* kawaii 3D hover pop */
+.trait-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* brighter kidcore color themes */
+.openness {
+  border-color: #ff70a6;
+  background: linear-gradient(145deg, #ffc8dd, #ff99c8);
+}
+
+.conscientiousness {
+  border-color: #ffd166;
+  background: linear-gradient(145deg, #ffec99, #ffd166);
+}
+
+.extraversion {
+  border-color: #06d6a0;
+  background: linear-gradient(145deg, #b2f7ef, #87f5b0);
+}
+
+.agreeableness {
+  border-color: #9bf6ff;
+  background: linear-gradient(145deg, #c0fdff, #a0f0ff);
+}
+
+.neuroticism {
+  border-color: #9b5de5;
+  background: linear-gradient(145deg, #cdb4ff, #a78bfa);
+}
+
+.trait-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.trait-card p {
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ✨ Call-to-action Button */
+.button.start-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+  background-size: 200% 200%;
+  animation: btnFlow 5s ease infinite;
+  color: #333;
+  font-weight: 700;
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 1.25rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@keyframes btnFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.button.start-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 🌸 Footer */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  font-size: 1rem;
+  color: #333;
+  background: rgba(255,255,255,0.85);
+  border-top: 4px dotted rgba(255, 200, 230, 0.6);
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+footer a {
+  color: #ff5f6d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
